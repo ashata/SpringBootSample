@@ -8,6 +8,8 @@ import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
 import javax.persistence.PersistenceUnit;
@@ -58,4 +60,8 @@ public class ExampleApplicationConfig {
     }
 */
 
+    @Bean
+    public JavaMailSender mailSender(){
+        return new JavaMailSenderImpl();
+    }
 }

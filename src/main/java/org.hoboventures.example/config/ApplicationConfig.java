@@ -1,5 +1,6 @@
 package org.hoboventures.example.config;
 
+import com.ryantenney.metrics.spring.config.annotation.EnableMetrics;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -18,18 +19,19 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @SpringBootApplication
 @EnableAutoConfiguration
-@PropertySource("exampleApp.properties")
-@EnableScheduling
+@PropertySource("classpath:exampleApp.properties")
+//@EnableScheduling
 @EnableTransactionManagement
-@EntityScan("org.hoboventures.example.domain")
-@EnableJpaRepositories("org.hoboventures.example.dao")
-@ComponentScan({"org.hoboventures.example", "org.hoboventures.example.config", "org.hoboventures.example.dao", "org.hoboventures.example.domain",
-        "org.hoboventures.example.service", "org.hoboventures.example.service.impl", "org.hoboventures.example.util", "org.hoboventures.example.web"})
+//@EntityScan("org.hoboventures.example.domain")
+//@EnableJpaRepositories("org.hoboventures.example.dao")
+//@ComponentScan({"org.hoboventures.example", "org.hoboventures.example.config", "org.hoboventures.example.dao", "org.hoboventures.example.domain",
+       // "org.hoboventures.example.service", "org.hoboventures.example.service.impl", "org.hoboventures.example.util", "org.hoboventures.example.web"})
+@ComponentScan({"org.hoboventures.example", "org.hoboventures.example.config","org.hoboventures.example.web"})
+@EnableMetrics
 public class ApplicationConfig extends SpringBootServletInitializer {
 
     public static void main(String[] args){
-        System.setProperty("spring.profiles.active", "test");
-        configureApplication(new SpringApplicationBuilder()).run(args);
+        SpringApplication.run(ApplicationConfig.class, args);
     }
 
     private static SpringApplicationBuilder configureApplication(SpringApplicationBuilder builder) {

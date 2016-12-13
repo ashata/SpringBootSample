@@ -1,5 +1,8 @@
 package org.hoboventures.example.web;
 
+import com.codahale.metrics.ConsoleReporter;
+import com.codahale.metrics.MetricRegistry;
+import com.ryantenney.metrics.spring.config.annotation.MetricsConfigurerAdapter;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,15 +13,19 @@ import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Created by Asha on 12/2/2016.
  */
-public class HealthMetrics implements HealthIndicator {
+@Configuration
+public class HealthMetrics extends MetricsConfigurerAdapter implements HealthIndicator {
     Logger log = LoggerFactory.getLogger(HealthMetrics.class);
 
     private static boolean emailSent = false;
@@ -76,9 +83,12 @@ public class HealthMetrics implements HealthIndicator {
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setSubject("Database connection lost");
         msg.setTo(toAddress);
-        msg.setText("Houston, we have a problem");
-
+        msg.setText("Hobo found");
         return msg;
     }
 
+    @Override
+    public void configureReporters(MetricRegistry metricRegistry) {
+        registerReporter(ConsoleReporter.forRegistry(metricRegistry).build()).start(1, TimeUnit.MINUTES);
+    }
 }
